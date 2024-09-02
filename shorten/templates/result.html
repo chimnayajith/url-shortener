@@ -32,7 +32,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 90px); /* Adjust according to navbar height */
+            min-height: calc(100vh - 90px); 
         }
         .result-container {
             background: #ffffff;
@@ -49,6 +49,14 @@
             font-size: 24px;
             font-weight: bold;
         }
+        .url-label {
+            font-weight: bold;
+            font-size: 16px;
+            color: #555;
+            text-align: left;
+            margin-bottom: 5px;
+            display: block;
+        }
         .url-container {
             word-wrap: break-word;
             overflow-wrap: break-word;
@@ -59,14 +67,15 @@
             border-radius: 5px;
             font-family: Arial, sans-serif;
             font-size: 16px;
-            white-space: pre-wrap;
+            white-space: normal;
             text-align: left;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         .btn-primary {
             background-color: #333;
             border-color: #333;
             margin-top: 10px;
+            margin-bottom: 10px;
         }
         .btn-primary:hover {
             background-color: #555;
@@ -86,19 +95,23 @@
     <div class="container-wrapper">
         <div class="result-container">
             <h2>
-                {% if is_really_long %}
-                    Your Really Long URL
-                {% else %}
-                    Your Shortened URL
-                {% endif %}
+                Your URL is ready!
             </h2>
+            <label class="url-label">Original URL:</label>
+            <div class="url-container">
+                {{ original_url }}
+            </div>
+            <label class="url-label">
+                {% if is_really_long %}
+                    Really Really Long URL
+                {% else %}
+                    Shortened URL
+                {% endif %}
+            </label>
             <div id="shortUrl" class="url-container">
                 {{ full_short_url }}
             </div>
             <button id="copyButton" class="btn btn-primary" onclick="copyToClipboard()">Copy</button>
-            <div class="url-container">
-                Original URL: {{ original_url }}
-            </div>
         </div>
     </div>
 
@@ -114,7 +127,6 @@
                     console.error('Failed to copy: ', err);
                 });
             } else {
-                // Fallback for older browsers
                 const textArea = document.createElement('textarea');
                 textArea.value = url;
                 document.body.appendChild(textArea);

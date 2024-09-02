@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from .models import ShortenedUrl
+from django.db.models import Q
 import random
 import string
 
@@ -13,7 +14,7 @@ def shorten_url(request):
         action = request.POST.get('action')
 
         if action == 'really_long':
-            code_length = 500
+            code_length = 1000
         else:
             code_length = 6
 
@@ -50,7 +51,7 @@ def shorten_url(request):
 
 def redirect_url(request, code):
     try:
-        url = get_object_or_404(ShortenedUrl, short_code=code)
+        url = get_object_or_404(ShortenedUrl, Q(short_code=code) | Q(long_code=code))
         return redirect(url.original_url)
     except Http404:
         return render(request, 'invalid_url.html')
